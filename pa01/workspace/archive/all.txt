@@ -1,3 +1,4 @@
 TODO: quote variables
 DONE: inspect paths
 TODO: test pipeline
+cat: missing.txt: No such file or directory
