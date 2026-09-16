@@ -12,7 +12,7 @@ navigating to a sibling directory requires first backing into the parents of the
 
 **Observation**
 
-```
+```text
 $ pwd
 /home/goliasa1/Documents/UNIX/CPS_444/pa01/workspace/inbox
 
@@ -21,11 +21,15 @@ $ cd ../archive/
 
 **Explanation**
 
+A pathname is used to locate an object within the system. Relative pathnames start the search at the current working directory (pa01/workspace/inbox/). Absolute pathnames give the ability to traverse from root.
+
 pwd - prints working directory
 This command shows all parent directories of the one currently being worked within. Thus the absolute pathname is:
 /home/goliasa1/Documents/UNIX/CPS_444/pa01/workspace/inbox/tasks.txt
 
 Since inbox/ and archive/ are both children of workspace/, to get from inbox/ to archive/ you must first back up to the parent directory (using ..) and then enter into archive/
+
+The relative pathname from inbox/ to archive/ is ../archive/
 
 Navigating to archive changes the tag to:
 goliasa1@student-virtual-machine-24:~/Documents/UNIX/CPS_444/pa01/workspace/archive $
@@ -40,7 +44,7 @@ copying the file requires taking the file as an argument, and then specifying th
 
 **Observation**
 
-```
+```text
 $ cp tasks.txt ../archive/tasks.copy
 $ ls ../archive/
 tasks.copy
@@ -56,13 +60,13 @@ The cp command copies the contents of the source file into a new file given its 
 + Source: tasks.txt
 + Destination: ../archive/tasks.copy
 
-This leaves the tasks.txt untouched and a copy of its data in tasks.copy. The metadata from the ls -l command proves the copy contains the same state, as its permissions match among the user, groups, and others 
+This leaves the tasks.txt untouched and a copy of its data in tasks.copy. The metadata from the ls -l command proves the copy contains the same state, as its permissions match among the user, groups, and others.
 
 In order to move outside of the working directory, .. is used to back into the parent, and then the further directory is specified.
 
 Now workspace/ looks like:
-+ /inbox/tasks.txt
-+ /archive/tasks.copy
++ /inbox/tasks.txt - state is unchanged
++ /archive/tasks.copy - state is updated with copied file
 
 ### 1.3
 
@@ -74,7 +78,7 @@ running ls on inbox/ returns 'two words.txt'
 
 **Observation**
 
-```
+```text
 $ file 'two words.txt'
 two words.txt: ASCII text
 
@@ -89,7 +93,7 @@ course=cps444
 The file name contains a space, making it treated like a string to prevent word splitting, and must be noted as a single word, when accessing it via the terminal. The absolute pathname of the file is:
 /home/goliasa1/Documents/UNIX/CPS_444/pa01/workspace/inbox/two words.txt
 
-The filename no longer includes quotes because they act as a signal to bash to not perform splitting at a whitespace boundary
+The filename no longer includes quotes because they act as a signal to bash to not perform splitting at a whitespace boundary. This is called quote removal and it is a shell instruction that tells the shell how to interpreter the filename.
 
 Because the file is short, I chose to only pick up the first 3 lines of the file to point out the difference from running the cat command on the file.
 
@@ -103,7 +107,7 @@ ls is not a built-in shell command and -P defines search for a PATH
 
 **Observation**
 
-```
+```text
 $ type cd
 cd is a shell builtin
 
@@ -129,14 +133,14 @@ other processes can be killed within different windows
 
 **Observation**
 
-```
+```text
 $ ps -o pid,ppid,comm
     PID    PPID COMMAND
  106334   14222 bash
  108951  106334 ps
 ```
 New window:
-```
+```text
  $ ps -o pid,ppid,comm
     PID    PPID COMMAND
  108975   14222 bash
@@ -151,7 +155,7 @@ ps PID = 108951 PPID = 106334
 
 The parent process ID of the ps command is that of the bash command's process ID. This is because the inspection process is a child of the bash process, the parent process. This shows that the bash process is the one that launched the ps process, meaning there is a parent/child relationship.
 
-When I opened a new window and reran the command, the bash parent process ID remained the same, however, the ps PPID changed. In both cases, the process ID changed.
+When I opened a new window and reran the command, the bash parent process ID remained the same, however, the ps PPID changed. In both cases, the process ID changed. Also, the PID itself updated, proving that new terminal windows create a new parent bash process.
 
 
 
@@ -167,7 +171,7 @@ the default mode before changing to 640 should be read/write for the user (file 
 
 **Observation**
 
-```
+```text
 $ id -un
 goliasa1
 
@@ -186,7 +190,7 @@ The second id command lists the groups associated with my username, sudo & users
 
 The long-listing from the ls command shows my user as the one who created the run.sh file and my group, which is also happens to be my username
 
-When attempting to access the file, Linux will check the first octet, which is -rw. As I am the user trying to access this file, it grants permission to read and write to the file. If accessing under a different user, Linux would next check the group
+When attempting to access the file, Linux will check the first triplet, which is -rw. As I am the user trying to access this file, it grants permission to read and write to the file. If accessing under a different user, Linux would next check the group
 
 ### 2.2
 
@@ -196,7 +200,7 @@ putting the script in mode 640 should keep read/write permissions for the file o
 
 **Observation**
 
-```
+```text
 $ chmod 640 run.sh
 $ ls -l run.sh 
 -rw-r----- 1 goliasa1 goliasa1 0 Sep 15 17:06 run.sh
@@ -204,13 +208,13 @@ $ ls -l run.sh
 
 **Explanation**
 
-As predicted, the owner/group/other octets align in the output of the ls -l command. The file owner can read & write, groups can read, other users have no access to the file
+As predicted, the owner/group/other triplets align in the output of the ls -l command. The file owner can read & write, groups can read, other users have no access to the file
 
 There is an initial decode bit is - since it is a file, not a directory
 
-+ the first octet: 6 decodes to 110 (rw-)
-+ the second octet: 4 decodes to 100 (r--)
-+ the third octet: 0 decodes to 000 (---)
++ the first triplet: 6 decodes to 110 (rw-)
++ the second triplet: 4 decodes to 100 (r--)
++ the third triplet: 0 decodes to 000 (---)
 
 ### 2.3
 
@@ -221,7 +225,7 @@ u+x adds execute permission to the user who created the file
 the other octets are not specifically updated, meaning no other changes will occur
 
 **Observation**
-```
+```text
 chmod u+x run.sh
 $ ls -l run.sh 
 -rwxr----- 1 goliasa1 goliasa1 0 Sep 15 17:06 run.sh
@@ -239,7 +243,7 @@ Before this command, ```./run.sh``` would have returned a permission error. Howe
 
 Execute on a file means that the kernel can run the file directly as a program or script process. This is possible as a file simply contains scripting code that can be executed.
 
-Execute on a directory means that a process can traverse and search names within that directory. Directories contain files, but do not directly have scripts stored at that level. This means that it does not make sense to simply run a directory, rather a process can cd through a directory to find something within one of its children files/directories.
+Execute on a directory means that a process can traverse and search names within that directory, or perform the cd command. Directories contain files, but do not directly have scripts stored at that level. This means that it does not make sense to simply run a directory, rather a process can cd through a directory to find something within one of its children files/directories.
 
 
 ## Part 3 - Expansion Produces Argument Words
@@ -251,7 +255,7 @@ Execute on a directory means that a process can traverse and search names within
 output should be: ```<two words>```
 
 **Observation**
-```
+```text
 $ printf '<%s>\n' $label
 <two>
 <words>
@@ -270,14 +274,14 @@ This differed from my prediction as I forgot whitespace becomes relevant when us
 output should be: ```<two words>```
 
 **Observation**
-```
+```text
 $ printf '<%s>\n' "$label"
 <two words>
 ```
 
 **Explanation**
 
-This is an example of parameter expansion that replaces $label with its value, two words. Since the variable is within double quotes, word splitting does not occur and when the quotes are removed, the entire value is passed to the printf function.
+This is an example of parameter expansion that replaces $label with its value, two words. Since the variable is within double quotes, word splitting does not occur and when quote removal occurs, the entire value is passed to the printf function.
 
 ### 3.3
 
@@ -286,7 +290,7 @@ This is an example of parameter expansion that replaces $label with its value, t
 output should be: ```<$label>```
 
 **Observation**
-```
+```text
 $ printf '<%s>\n' '$label'
 <$label>
 ```
@@ -300,14 +304,14 @@ Single quoting prevents any type of expansion. Therefore, after quote removal, t
 **Prediction**
 
 output should be:
-```
+```text
 <tasks.txt>
 <two.txt>
 <events.txt>
 ```
 
 **Observation**
-```
+```text
 $ printf '<%s>\n' $pattern
 <events.txt>
 <tasks.txt>
@@ -325,7 +329,7 @@ This is an example of parameter expansion as $pattern is replaced first with *.t
 output should be: ```<*.txt>```
 
 **Observation**
-```
+```text
 $ printf '<%s>\n' "$pattern"
 <*.txt>
 ```
@@ -339,14 +343,14 @@ This is an example of parameter expansion where double quoting prevents pathname
 **Prediction**
 
 output should be:
-```
+```text
 <red>
 <green>
 <>
 ```
 
 **Observation**
-```
+```text
 $ printf '<%s>\n' $(printf 'red green\n')
 <red>
 <green>
@@ -365,7 +369,7 @@ I was wrong in predicting that the new line would generate a third, empty argume
 output should be: ```<red green>```
 
 **Observation**
-```
+```text
 $ printf '<%s>\n' "$(printf 'red green\n')"
 <red green>
 ```
@@ -379,7 +383,7 @@ The subshell command prevent word splitting on the returned sting, meaning that 
 **Prediction**
 
 output should have 7 values and be:
-```
+```text
 <alpha>
 <beta>
 <events.txt>
@@ -390,7 +394,7 @@ output should have 7 values and be:
 ```
 
 **Observation**
-```
+```text
 $ printf '<%s>\n' $words $pattern "$words" "$pattern"
 <alpha>
 <beta>
@@ -421,8 +425,12 @@ the contents of tasks.txt will be printed to the terminal and copied into archiv
 
 the error code that missing.txt is not a file or directory will be copied into archive/cat.err
 
++ desc 1 (stdin) - printed to the terminal
++ desc 2 (stdout) - forwarded by > to cat.out
++ desc 3 (stderr) - forwarded by 2> to cat.err
+
 **Observation**
-```
+```text
 $ cat tasks.txt missing.txt > ../archive/cat.out 2> ../archive/cat.err
 $ cat ../archive/cat.out
 TODO: quote variables
@@ -445,7 +453,7 @@ The bytes from the invalid cat command run on missing.txt went to descriptor 2, 
 the order of redirection matters because in the second command, the operator will causes the error log to be printed to the terminal and not necessarily just to the files
 
 **Observation**
-```
+```text
 $ cat tasks.txt missing.txt > ../archive/all.txt 2>&1
 $ cat ../archive/all.txt 
 TODO: quote variables
@@ -474,7 +482,7 @@ This happens because the duplication must be the last part of the command in ord
 each unique event will be printed, prefixed by the number of times it appears in the file, -nr will likely then sort by number order
 
 **Observation**
-```
+```text
 $ cat events.txt 
 warning
 error
@@ -519,7 +527,7 @@ The full command ends up printing all messages from events.txt only once, with t
 ### 4.4
 
 **Observation**
-```
+```text
 $ cat tasks.txt not-there.txt 2> ../archive/synthesis.err | grep TODO | sort > ../archive/synthesis.out
 
 $ cat ../archive/synthesis.err
@@ -528,6 +536,10 @@ $ cat ../archive/synthesis.out
 TODO: quote variables
 TODO: test pipeline
 ```
+
++ cat: stdin - terminal; stdout - pipe 1; stderr - ../archive/synthesis.err
++ grep TODO: stdin - pipe 1; stdout - pipe 2; stderr - terminal
++ sort: stdin - pipe 2; stdout - ../archive/synthesis.out; stderr - terminal
 
 **Explanation**
 
@@ -543,7 +555,7 @@ The standard output from the valid file tasks.txt is piped to grep TODO, which f
 ### 5.1
 
 **Observation**
-```
+```text
 $ grep -q TODO tasks.txt
 $ printf 'TODO status = %s\n' "$?"
 TODO status = 0
@@ -557,7 +569,7 @@ FIXME status = 1
 
 ```$?``` checks the exit status of the previous command run. If grep returns a match, the exit status is stored as 0, otherwise, 1.
 
-The grep command filters the input file, tasks.txt, by the argument TODO (-q quiets any output from appearing in the terminal). The returned status stored in an undefined variable is 0, since TODO appears in the file. 
+The grep command filters the input file, tasks.txt, by the argument TODO (-q quiets any output from appearing in the terminal). The returned status stored in the special shell parameter is 0, since TODO appears in the file. 
 
 
 ### 5.2
@@ -567,7 +579,7 @@ The grep command filters the input file, tasks.txt, by the argument TODO (-q qui
 the pipeline may act like an or gate, both commands should return 0
 
 **Observation**
-```
+```text
 $ false | true
 $ printf 'pipeline status = %s\n' "$?"
 pipeline status = 0
