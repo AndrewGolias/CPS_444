@@ -536,3 +536,51 @@ cat attempts to print tasks.txt and not-there.txt
 The standard error from the invalid file not-there.txt is written to descriptor 2 and forwarded to the .err file
 
 The standard output from the valid file tasks.txt is piped to grep TODO, which filters all lines containing the substring "TODO", is piped to sort, and then is written to descriptor 1 and forwarded to the .out file
+
+
+## Part 5 - Data & Exit Status are Different Channels
+
+### 5.1
+
+**Observation**
+```
+$ grep -q TODO tasks.txt
+$ printf 'TODO status = %s\n' "$?"
+TODO status = 0
+
+$ grep -q FIXME tasks.txt
+$ printf 'FIXME status = %s\n' "$?"
+FIXME status = 1
+```
+
+**Explanation**
+
+```$?``` checks the exit status of the previous command run. If grep returns a match, the exit status is stored as 0, otherwise, 1.
+
+The grep command filters the input file, tasks.txt, by the argument TODO (-q quiets any output from appearing in the terminal). The returned status stored in an undefined variable is 0, since TODO appears in the file. 
+
+
+### 5.2
+
+**Prediction**
+
+the pipeline may act like an or gate, both commands should return 0
+
+**Observation**
+```
+$ false | true
+$ printf 'pipeline status = %s\n' "$?"
+pipeline status = 0
+
+$ true | false
+$ printf 'pipeline status = %s\n' "$?"
+pipeline status = 1
+```
+
+**Explanation**
+
+Bash's exit status of the full pipeline is the result of the final command within that pipeline.
+
+The last command in the first command entered is true, which is why the status returned equals 0.
+
+The last command in the second command entered is false, which is why the status returned equals 1.
