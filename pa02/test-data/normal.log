@@ -1,0 +1,7 @@
+2026-09-27 INFO auth alice login-ok
+2026-09-27 WARN disk server1 usage-91
+2026-09-27 ERROR web bob request-timeout
+2026-09-27 ERROR auth carol login-denied
+2026-09-27 INFO db server3 ready
+2026-09-27 WARN disk server2 usage-87
+2026-09-27 ERROR auth erin login-denied

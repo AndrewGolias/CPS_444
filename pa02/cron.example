@@ -1,0 +1,6 @@
+# cron.example - allows for unattended execution of event-report
+#
+# Runs daily at 4:50 PM
+# MINUTES HOUR DAY-MONTH MONTH DAY-WEEK
+
+50 16 * * * REPORT_LEVELS='WARN|ERROR' /home/YOUR_USER/Documents/UNIX/CPS_444/pa02/event-report.sh /home/YOUR_USER/Documents/UNIX/CPS_444/pa02/reports/daily.txt /home/YOUR_USER/Documents/UNIX/CPS_444/pa02/test-data/normal.log /home/YOUR_USER/Documents/UNIX/CPS_444/pa02/extra.log >> /home/YOUR_USER/Documents/UNIX/CPS_444/pa02/reports/cron.log 2>> /home/YOUR_USER/Documents/UNIX/CPS_444/pa02/reports/cron.err

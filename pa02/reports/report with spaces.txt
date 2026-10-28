@@ -1,0 +1,24 @@
+Event Report
+============
+Selected levels: WARN|ERROR
+Input files: 1
+Matching records: 5
+
+By Level
+--------
+3 ERROR
+2 WARN
+
+By Service
+----------
+2 auth
+2 disk
+1 web
+
+Selected Events
+---------------
+2026-09-27 WARN disk server1 usage-91
+2026-09-27 ERROR web bob request-timeout
+2026-09-27 ERROR auth carol login-denied
+2026-09-27 WARN disk server2 usage-87
+2026-09-27 ERROR auth erin login-denied

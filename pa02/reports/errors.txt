@@ -1,0 +1,20 @@
+Event Reports
+=============
+Selected levels: ERROR
+Input files: 1
+Matching records: 3
+
+By Level
+--------
+      3 ERROR
+
+By Service
+----------
+      2 auth
+      1 web
+
+Selected Events
+---------------
+2026-09-27 ERROR web bob request-timeout
+2026-09-27 ERROR auth carol login-denied
+2026-09-27 ERROR auth erin login-denied

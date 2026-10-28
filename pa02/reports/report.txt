@@ -1,0 +1,26 @@
+Event Report
+============
+Selected levels: WARN|ERROR
+Input files: 2
+Matching records: 7
+
+By Level
+--------
+4 ERROR
+3 WARN
+
+By Service
+----------
+3 auth
+2 disk
+2 web
+
+Selected Events
+---------------
+2026-09-27 WARN disk server1 usage-91
+2026-09-27 ERROR web bob request-timeout
+2026-09-27 ERROR auth carol login-denied
+2026-09-27 WARN disk server2 usage-87
+2026-09-27 ERROR auth erin login-denied
+2026-09-27 WARN web node1 latency-high
+2026-09-27 ERROR auth frank login-denied

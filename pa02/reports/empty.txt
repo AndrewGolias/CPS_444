@@ -1,0 +1,14 @@
+Event Report
+============
+Selected levels: ERR
+Input files: 1
+Matching records: 0
+
+By Level
+--------
+
+By Service
+----------
+
+Selected Events
+---------------
